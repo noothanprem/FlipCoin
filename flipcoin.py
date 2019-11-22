@@ -1,4 +1,5 @@
 import random
+import operator
 class FlipCoin:
 	
 	singlet_dict = {'H':0,'T':0}
@@ -19,6 +20,8 @@ class FlipCoin:
 		tails_percentage = 100 - heads_percentage
 		print("Heads Percentage : ",heads_percentage)
 		print("Tails Percentage : ",tails_percentage)
+		
+		return self.singlet_dict
 
 	def doublet(self,number):
 
@@ -39,6 +42,7 @@ class FlipCoin:
 				self.doublet_dict['HH'] += 1
 		
 		print(self.doublet_dict)
+		sorted_doublet_dict = sorted(self.doublet_dict.items(), key=lambda kv:kv[1])
 		tt_percentage = (self.doublet_dict['TT'] / number) * 100
 		th_percentage = (self.doublet_dict['TH'] / number) * 100
 		ht_percentage = (self.doublet_dict['HT'] / number) * 100
@@ -48,6 +52,8 @@ class FlipCoin:
 		print("TH Percentage : ",th_percentage)
 		print("HT Percentage : ",ht_percentage)
 		print("HH Percentage : ",hh_percentage)
+		
+		return self.doublet_dict
 	
 	def triplet(self,number):
 		
@@ -97,11 +103,41 @@ class FlipCoin:
 
 		print(triplet_percentage_dict)
 
+		
+		return self.triplet_dict
+
 if __name__ == "__main__":
 
 	flipcoin_object = FlipCoin()
 	number = int(input("How many times you want to flip the coin ? :"))
-	flipcoin_object.singlet(number)
-	flipcoin_object.doublet(number)
-	flipcoin_object.triplet(number)
+	
+	singlet_dict = flipcoin_object.singlet(number)
+	sorted_singlet_dict = sorted(singlet_dict.items(), key=lambda k : (k[1],k[0]))
+	print("Sorted singlet Pairs : ",sorted_singlet_dict)
+	
+	doublet_dict = flipcoin_object.doublet(number)
+	sorted_doublet_dict = sorted(doublet_dict.items(),key = lambda k : (k[1],k[0]))
+	print("Sorted doublet Pairs : ",sorted_doublet_dict)
+
+	triplet_dict = flipcoin_object.triplet(number)
+	sorted_triplet_dict = sorted(triplet_dict.items(),key=lambda k : (k[1],k[0]))
+	print("Sorted triplet Pairs : ",sorted_triplet_dict)
+
+	singlet_max_element = sorted_singlet_dict[len(sorted_singlet_dict)-1]
+
+	doublet_max_element = sorted_doublet_dict[len(sorted_doublet_dict)-1]
+
+	triplet_max_element = sorted_triplet_dict[len(sorted_triplet_dict)-1]
+	
+	for each_pair in sorted_singlet_dict:
+		if singlet_max_element[1] == each_pair[1]:
+			print("Winning combination of Singlet : ",each_pair)
+	for each_pair in sorted_doublet_dict:
+		if doublet_max_element[1] == each_pair[1]:
+			print("Winning combination of Doublet : ",each_pair)
+	for each_pair in sorted_triplet_dict:
+		if triplet_max_element[1] == each_pair[1]:
+			print("Winning combination of triplet : ",each_pair) 	
+
+
 
